@@ -71,7 +71,7 @@ protected:
 #define PCCONSTRUCT : PlayerCharacterDelegate() {\
   HP->setMaxWell(BASEHP);\
   HP->increaseCurrent(BASEHP);\
-  increaseStats(BASESTR, BASEINT);\
+  increaseStats(BASESTR, BASEINT, BASEAGI);\
 }
 
 #define LEVELUP void LevelUp() override {\
@@ -80,71 +80,25 @@ protected:
   increaseStats((stattype)((BASESTR+1u)/2.f), (stattype)((BASEINT+1u)/2.f));\
 }
 
-class Cleric : public PlayerCharacterDelegate
-{
-public:
-  static const welltype BASEHP = 14u;
-  static const stattype BASESTR = 2u;
-  static const stattype BASEINT = 3u;
+#define CHARACTERCLASS(classname, basehp, basestr, baseint, baseagi) class classname : public PlayerCharacterDelegate {\
+public:\
+  static const welltype BASEHP = (welltype)basehp;\
+  static const stattype BASESTR = (stattype)basestr;\
+  static const stattype BASEINT = (stattype)baseint;\
+  static const stattype BASEAGI = (stattype)baseagi;\
+  std::string getClassName() override {\
+    return std::string(#classname);\
+  }\
+private:\
+  LEVELUP\
+};\
 
-  Cleric() PCCONSTRUCT;
-
-  std::string getClassName() override {
-    return std::string("Cleric");
-  }
-
-private:
-  LEVELUP;
-  
-};
-
-class Rogue : public PlayerCharacterDelegate {
-public:
-  static const welltype BASEHP = 12u;
-  static const stattype BASESTR = 3u;
-  static const stattype BASEINT = 2u;
-
-  Rogue() PCCONSTRUCT;
-
-  std::string getClassName() override {
-    return std::string("Rogue");
-  }
-
-private:
-  LEVELUP;
-};
-
-class Warrior : public PlayerCharacterDelegate {
-public:
-  static const welltype BASEHP = 18u;
-  static const stattype BASESTR = 4u;
-  static const stattype BASEINT = 1u;
-
-  Warrior() PCCONSTRUCT;
-
-  std::string getClassName() override {
-    return std::string("Warrior");
-  }
-
-private:
-  LEVELUP;
-};
-
-class Wizard : public PlayerCharacterDelegate {
-public:
-  static const welltype BASEHP = 10u;
-  static const stattype BASESTR = 1u;
-  static const stattype BASEINT = 4u;
-
-  Wizard() PCCONSTRUCT;
-
-  std::string getClassName() override {
-    return std::string("Wizard");
-  }
-
-private:
-  LEVELUP;
-};
+//             Class      HP, STR, INT, AGI  
+CHARACTERCLASS(Cleric,    14u, 3u, 5u, 1u)
+CHARACTERCLASS(Wizard,    10u, 1u, 8u, 1u)
+CHARACTERCLASS(Warrior,   20u, 5u, 2u, 2u)
+CHARACTERCLASS(Rogue,     14u, 3u, 3u, 5u)
+CHARACTERCLASS(Berzerker, 22u, 6u, 1u, 2u)
 
 
 class PlayerCharacter {
