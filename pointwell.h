@@ -50,7 +50,6 @@ public:
 
   void increaseCurrent(welltype amount) {
     if ((amount + CurrentFullness) > MaxWell)
-      std::cout << "is this it?" << std::endl;
       CurrentFullness = MaxWell;
       return;
 

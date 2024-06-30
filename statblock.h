@@ -28,10 +28,15 @@ public:
     return Intellect;
   }
 
-  void increaseStats(stattype s, stattype i)
+  stattype getAgility() const {
+    return Agility;
+  }
+
+  void increaseStats(stattype s, stattype i, stattype a)
   {
     Strength += s;
     Intellect += i;
+    Agility += a;
   }
 
 protected:
